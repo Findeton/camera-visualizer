@@ -8,11 +8,13 @@
 import FreeCamera from "../FreeCamera";
 import * as THREE from "three";
 import Cube from "./Cube";
+import CameraArray from "./CameraArray"
 
 export default class View {
 	private renderer: THREE.WebGLRenderer;
 	private scene: THREE.Scene;
 	private camera: FreeCamera;
+	private cameraArray: CameraArray
 	private cube: Cube;
 
 	constructor(canvasElem: HTMLCanvasElement) {
@@ -30,6 +32,7 @@ export default class View {
 		ambientLight.position.set( 2, 7, 4 );
 		this.scene.add( ambientLight, pointLight );
 		this.camera = new FreeCamera(this.scene, this.renderer);
+		this.cameraArray = new CameraArray(this.scene)
 
 		// Set initial sizes
 		this.onWindowResize(window.innerWidth, window.innerHeight);
