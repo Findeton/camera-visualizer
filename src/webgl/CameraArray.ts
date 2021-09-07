@@ -1,10 +1,13 @@
 import * as THREE from "three"
+import Cube from "./Cube"
 
 class CameraArray {
     private camerasInput: HTMLTextAreaElement
-    public points: Array<THREE.Vector3> = []
+    public cubes: Array<Cube> = []
+    public parentScene: THREE.Scene
 
     constructor (parentScene: THREE.Scene) {
+        this.parentScene = parentScene
 
 		this.camerasInput = document.getElementById("cameras-input") as HTMLTextAreaElement
 
@@ -29,7 +32,16 @@ class CameraArray {
             }
 
             const newPoints: Array<THREE.Vector3> = []
-            for (const el of parsedJson) {
+
+            const cubesLen = this.cubes.length
+            for (let i = cubesLen - 1; i >= parsedJson.length; i-- ) {
+                this.cubes[i].dispose()
+                delete this.cubes[i]
+            }
+
+            for (let i = 0; i < parsedJson.length; i++ ) {
+                const el = parsedJson[i]
+
                 if (!Array.isArray(el)) {
                     console.log('Invalid JSON: element not an array')
                     return
@@ -44,9 +56,12 @@ class CameraArray {
                     return
                 }
 
-                newPoints.push(new THREE.Vector3(Number(el[0]), Number(el[1]), Number(el[2]) ))
+                if (this.cubes.length <= i) {
+                    const cube = new Cube(this.parentScene)
+                    this.cubes.push(cube)
+                }
+                this.cubes[i].setPosition( Number(el[0]), Number(el[1]), Number(el[2]) )
             }
-            this.points = newPoints
         } catch (e) {
             //console.log(e)
         }
@@ -55,7 +70,8 @@ class CameraArray {
     private reset(): void {
         console.log("reset")
         this.camerasInput.value = ""
-        this.points = []
+        this.cubes.map(c => c.dispose())
+        this.cubes = []
     }
 }
 
