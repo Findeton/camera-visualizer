@@ -7,7 +7,7 @@
 
 import FreeCamera from "../FreeCamera";
 import * as THREE from "three";
-import Cube from "./Cube";
+//import Cube from "./Cube";
 import CameraArray from "./CameraArray"
 
 export default class View {
@@ -15,7 +15,7 @@ export default class View {
 	private scene: THREE.Scene;
 	private camera: FreeCamera;
 	private cameraArray: CameraArray
-	private cube: Cube;
+	//private cube: Cube;
 
 	constructor(canvasElem: HTMLCanvasElement) {
 		this.renderer = new THREE.WebGLRenderer({
@@ -24,7 +24,7 @@ export default class View {
 		});
 		this.scene = new THREE.Scene();
 		this.scene.background = new THREE.TextureLoader().load("./textures/bgnd.png");
-		this.cube = new Cube(this.scene);
+		//this.cube = new Cube(this.scene, 0x20ff00);
 
 		const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
 		const pointLight = new THREE.PointLight(0xffffff, 0.5);
